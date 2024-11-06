@@ -1,7 +1,7 @@
 import React from "react";
-import bannerImg from "../assets/banner.png";
+import bannerImg from "../../assets/banner.png";
 import { FaSearch } from "react-icons/fa";
-import Container from "./Container";
+import Container from "../../Component/Container";
 
 function Hero() {
   return (

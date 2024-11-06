@@ -1,6 +1,6 @@
 import React from "react";
-import Container from "./Container";
-import Button from "./Button";
+import Container from "../../Component/Container";
+import Button from "../../Component/Button";
 
 function WhyChoose() {
   return (
