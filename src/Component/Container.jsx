@@ -1,11 +1,8 @@
 import React from "react";
+import { cn } from "../utils/cn";
 
 function Container({ children, className }) {
-  return (
-    <div className={`px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={cn("px-[4vw] ", className)}>{children}</div>;
 }
 
 export default Container;

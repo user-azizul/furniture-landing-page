@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaShoppingBag } from "react-icons/fa";
-import {
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle
-} from "@headlessui/react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import { IoCloseOutline } from "react-icons/io5";
 import { CiMenuFries } from "react-icons/ci";
 import Container from "./Container";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navArray = [
     { path: "/", item: "Furniture" },
@@ -21,8 +17,22 @@ function Navbar() {
     { path: "/contact", item: "Contact" }
   ];
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header>
+    <header
+      className={`fixed top-0 left-0 w-full z-40 transition-colors duration-300 ${
+        isScrolled
+          ? "bg-white shadow-lg text-gray-900"
+          : "bg-transparent text-white"
+      }`}
+    >
       <Container>
         <nav className="max-w-screen-2xl mx-auto py-6 flex justify-between items-center">
           <Link to="/" className="font-bold">
@@ -38,7 +48,9 @@ function Navbar() {
                   className={({ isActive }) =>
                     isActive
                       ? "text-primary font-semibold text-sm"
-                      : "hover:text-primary text-gray-700"
+                      : `hover:text-primary ${
+                          isScrolled ? "text-gray-700" : "text-white/80"
+                        }`
                   }
                 >
                   {nav.item}
@@ -48,18 +60,12 @@ function Navbar() {
           </ul>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(true)}
-            className="md:hidden text-white text-2xl"
-          >
-            Menu
-          </button>
 
           {/* Mobile Menu (Dialog) */}
           <Dialog
             open={isOpen}
             onClose={() => setIsOpen(false)}
-            className="relative z-50 w-screen text-white/80 md:hidden block"
+            className="relative z-50 w-screen md:hidden block"
           >
             <div className="fixed inset-0 z-50 bg-black/90 flex w-screen items-center justify-center p-4">
               <DialogPanel className="w-[95%] space-y-4 bg-secondary border p-6 border-lightText rounded-md absolute top-5">
@@ -72,13 +78,13 @@ function Navbar() {
                     <IoCloseOutline />
                   </button>
                 </div>
-                <div className="flex flex-col gap-5 pt-5">
+                <div className="flex flex-col gap-5 pt-5 ">
                   {navArray.map((nav, index) => (
                     <NavLink
                       key={index}
                       to={nav.path}
                       onClick={() => setIsOpen(false)}
-                      className="hover:text-white duration-300 relative group flex items-center gap-2"
+                      className="hover:text-white  text-white/60 duration-300 relative group flex items-center gap-2"
                     >
                       <span className="w-2.5 h-2.5 rounded-full border border-white/30 inline-flex group-hover:border-white duration-300"></span>
                       {nav.item}
@@ -91,7 +97,7 @@ function Navbar() {
           </Dialog>
 
           {/* Cart Icon */}
-          <div className=" flex space-x-8">
+          <div className="flex space-x-8">
             <div className="relative">
               <FaShoppingBag className="text-xl relative" />
               <sup className="absolute top-0 -right-3 bg-primary w-5 h-5 rounded-full text-white flex items-center justify-center">
@@ -100,12 +106,13 @@ function Navbar() {
             </div>
             <div
               onClick={() => setIsOpen(true)}
-              className="block md:hidden  text-slate-900"
+              className={`block md:hidden  ${
+                isScrolled ? "text-gray-700" : "text-white"
+              }`}
             >
               <CiMenuFries className="text-xl" />
             </div>
           </div>
-          {/* menu icon */}
         </nav>
       </Container>
     </header>
