@@ -50,7 +50,7 @@ const Testimonials = () => {
         className="md:max-w-7xl mx-auto relative rounded"
       >
         {reviews?.map((review, index) => (
-          <SwiperSlide
+          <SwiperSlide key={index}
             className=" bg-no-repeat bg-cover rounded-lg"
             style={{ backgroundImage: `url(${review.coverImg})` }}
           >
